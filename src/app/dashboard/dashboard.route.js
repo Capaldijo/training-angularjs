@@ -1,14 +1,15 @@
 (function() {
     'use strict';
     angular
-        .module('app')
+        .module('app.dashboard')
         .config(routesConfig);
 
+    /* @ngInject */
     function routesConfig($stateProvider) {
         $stateProvider
-            .state('app', {
-                url: '/',
-                component: 'hello'
+            .state('dashboard', {
+                url: '/dashboard',
+                component: 'cdbDashboard'
             });
     }
 })();
