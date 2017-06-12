@@ -5,6 +5,8 @@
     <title>Dashboard</title>
 </head>
 
+<ng-include src="'src/app/dashboard/header.html'"></ng-include>
+
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
@@ -81,7 +83,7 @@
             <!-- Browse attribute computers -->
             <tbody id="results">
 
-            <tr ng-repeat="computer in $ctrl.computers track by computer.id">
+            <tr dir-paginate="computer in $ctrl.computers|itemsPerPage:$ctrl.line" total-items="$ctrl.count.length">
                 <td class="editMode" style="display: none">
                     <input type="checkbox" name="cb" class="cb" value="1">
                 </td>
@@ -100,43 +102,14 @@
 
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
-        <ul class="pagination">
-            <li>
-                <a href="?search=&numPage=0&nbLine=10&orderBy=0&asc=false" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=0&nbLine=10&orderBy=0&asc=false">
-                    1
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=10&nbLine=10&orderBy=0&asc=false">
-                    2
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=20&nbLine=10&orderBy=0&asc=false">
-                    3
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=30&nbLine=10&orderBy=0&asc=false">
-                    4
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=40&nbLine=10&orderBy=0&asc=false">
-                    5
-                </a>
-            </li>
-            <li>
-                <a href="?search=&numPage=550&nbLine=10&orderBy=0&asc=false" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
+
+        <dir-pagination-controls
+                max-size="7"
+                direction-links="false"
+                boundary-links="true"
+                on-page-change="$ctrl.getData(newPageNumber)">
+        </dir-pagination-controls>
+
         <div class="btn-group btn-group-sm pull-right" role="group" >
             <a href="?search=&numPage=0&nbLine=10&orderBy=0&asc=false" class="btn btn-default">10</a>
             <a href="?search=&numPage=0&nbLine=50&orderBy=0&asc=false" class="btn btn-default">50</a>

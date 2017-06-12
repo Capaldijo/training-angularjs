@@ -12,6 +12,7 @@
         // jshint validthis: true
         const vm = this;
         vm.hello = 'Hello Computer!';
+        vm.line = 10;
         vm.$onInit = $onInit;
 
         vm.computers = [];
@@ -20,13 +21,13 @@
         count();
 
         function list() {
-            return listAll().then(function() {
+            return listByPage(0).then(function() {
                 $log.info('Activated ListAll View');
             });
         }
 
-        function listAll() {
-            return dashboardService.getComputerByPage(0, 10)
+        function listByPage(numPage) {
+            return dashboardService.getComputerByPage(numPage, vm.line)
                 .then(function(data) {
                     vm.computers = data;
                     return vm.computers;
@@ -49,5 +50,15 @@
         function $onInit() {
             $log.debug('DashboardController init');
         }
+
+        vm.getData = function(numPage) {
+            vm.computers = [];
+            dashboardService.getComputerByPage(numPage-1, vm.line).then(function (data) {
+                vm.computers = data;
+            });
+            dashboardService.listAll().then(function (data) {
+                vm.count = data;
+            });
+        };
     }
 })();
