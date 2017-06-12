@@ -7,6 +7,8 @@
         'ui.bootstrap.fontawesome',
         'blocks',
         'app.hello',
-        'app.dashboard'
+        'app.header',
+        'app.dashboard',
+        'app.service'
     ]);
 })();

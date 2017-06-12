@@ -11,54 +11,81 @@
     function DashboardController($log, dashboardService) {
         // jshint validthis: true
         const vm = this;
-        vm.hello = 'Hello Computer!';
-        vm.line = 10;
-        vm.$onInit = $onInit;
 
+        vm.line = 10;
+        vm.page = 0;
+        vm.orderBy = 0;
+        vm.search = '';
+        vm.asc = false;
         vm.computers = [];
+        vm.count = 0;
+
+        vm.$onInit = $onInit;
+        vm.changePage = changePage;
+        vm.nbLine = changeNbLine;
+        vm.sortBy = sortBy;
+        vm.searchBy = searchBy;
 
         list();
         count();
 
         function list() {
-            return listByPage(0).then(function() {
-                $log.info('Activated ListAll View');
+            return listByPage().then(function() {
             });
         }
 
-        function listByPage(numPage) {
-            return dashboardService.getComputerByPage(numPage, vm.line)
+        function count() {
+            return countAll().then(function () {
+            });
+        }
+
+        function listByPage() {
+            return dashboardService.getComputerByPage(vm.page, vm.line, vm.search, vm.orderBy, vm.asc)
                 .then(function(data) {
                     vm.computers = data;
                     return vm.computers;
                 });
         }
 
-        function count() {
-            return countAll().then(function () {
-                $log.info('Activated Count View');
-            });
-        }
-
-        function countAll() {
-            return dashboardService.listAll()
+        function countAll(search) {
+            return dashboardService.listSearch(search)
                 .then(function (data) {
                     vm.count = data;
                     return vm.count;
                 });
         }
+
         function $onInit() {
             $log.debug('DashboardController init');
         }
 
-        vm.getData = function(numPage) {
-            vm.computers = [];
-            dashboardService.getComputerByPage(numPage-1, vm.line).then(function (data) {
-                vm.computers = data;
-            });
-            dashboardService.listAll().then(function (data) {
-                vm.count = data;
-            });
-        };
+        function changePage(numPage) {
+            vm.page = numPage - 1;
+            listByPage();
+            countAll();
+        }
+
+        function changeNbLine(nbLine) {
+            vm.line = nbLine;
+            listByPage();
+            countAll();
+        }
+
+        function sortBy(column) {
+            if (column === vm.orderBy) { // if click on same column => changing order
+                vm.asc = !vm.asc;
+            } else { // else changing column so order true by default.
+                vm.asc = true;
+            }
+            vm.orderBy = column;
+            listByPage();
+            countAll();
+        }
+
+        function searchBy(search) {
+            vm.search = search;
+            listByPage();
+            countAll(search);
+        }
     }
 })();

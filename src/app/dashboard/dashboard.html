@@ -5,20 +5,19 @@
     <title>Dashboard</title>
 </head>
 
-<ng-include src="'src/app/dashboard/header.html'"></ng-include>
+<cdbheader></cdbheader>
 
 <section id="main">
     <div class="container">
         <h1 id="homeTitle">
-            {{ $ctrl.count.length }} Ordinateurs trouvés
+            {{ $ctrl.count }} Ordinateurs trouvés
         </h1>
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
-                <form id="searchForm" action="dashboard" method="GET" class="form-inline">
-                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
-                    <input type="hidden" value="10" id="nbLine" name="nbLine"/>
-                    <input type="submit" id="searchsubmit" value="Filtrer par nom"
-                           class="btn btn-primary"/>
+                <form id="searchForm" class="form-inline">
+                    <input type="search" ng-model="search" class="form-control" placeholder="Search name"/>
+                    <input type="submit" ng-click="$ctrl.searchBy(search)" value="Filtrer par nom"
+                                                       class="btn btn-primary"/>
                 </form>
             </div>
             <div class="pull-right">
@@ -53,27 +52,27 @@
                     </span>
                 </th>
                 <th>
-                    <a href="?search=&numPage=0&nbLine=10&orderBy=1&asc=true">
+                    <a ng-click="$ctrl.sortBy(1)">
                         Nom de l'Ordinateur
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </a>
                 </th>
                 <th>
-                    <a href="?search=&numPage=0&nbLine=10&orderBy=2&asc=true">
+                    <a ng-click="$ctrl.sortBy(2)">
                         Date de mise en service
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </a>
                 </th>
                 <!-- Table header for Discontinued Date -->
                 <th>
-                    <a href="?search=&numPage=0&nbLine=10&orderBy=3&asc=true">
+                    <a ng-click="$ctrl.sortBy(3)">
                         Date de fin de service
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </a>
                 </th>
                 <!-- Table header for Company -->
                 <th>
-                    <a href="?search=&numPage=0&nbLine=10&orderBy=4&asc=true">
+                    <a ng-click="$ctrl.sortBy(4)">
                         Compagnie
                         <i class="fa fa-caret-up" aria-hidden="true"></i>
                     </a>
@@ -83,12 +82,12 @@
             <!-- Browse attribute computers -->
             <tbody id="results">
 
-            <tr dir-paginate="computer in $ctrl.computers|itemsPerPage:$ctrl.line" total-items="$ctrl.count.length">
+            <tr dir-paginate="computer in $ctrl.computers | itemsPerPage:$ctrl.line track by computer.id" total-items="$ctrl.count">
                 <td class="editMode" style="display: none">
                     <input type="checkbox" name="cb" class="cb" value="1">
                 </td>
                 <td>
-                    <a href="edit_computer?id=1" onclick="">{{computer.name}}</a>
+                    <a href="edit_computer?id=1" onclick="">{{::computer.name}}</a>
                 </td>
                 <td>{{computer.introduced}}</td>
                 <td>{{computer.discontinued}}</td>
@@ -107,13 +106,13 @@
                 max-size="7"
                 direction-links="false"
                 boundary-links="true"
-                on-page-change="$ctrl.getData(newPageNumber)">
+                on-page-change="$ctrl.changePage(newPageNumber)">
         </dir-pagination-controls>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a href="?search=&numPage=0&nbLine=10&orderBy=0&asc=false" class="btn btn-default">10</a>
-            <a href="?search=&numPage=0&nbLine=50&orderBy=0&asc=false" class="btn btn-default">50</a>
-            <a href="?search=&numPage=0&nbLine=100&orderBy=0&asc=false" class="btn btn-default">100</a>
+            <a ng-click="$ctrl.nbLine(10)" class="btn btn-default" ng-class="{active: $ctrl.line == 10}">10</a>
+            <a ng-click="$ctrl.nbLine(50)" class="btn btn-default" ng-class="{active: $ctrl.line == 50}">50</a>
+            <a ng-click="$ctrl.nbLine(100)" class="btn btn-default" ng-class="{active: $ctrl.line == 100}">100</a>
         </div>
     </div>
 </footer>
