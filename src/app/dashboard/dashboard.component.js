@@ -8,7 +8,7 @@
         });
 
     /* @ngInject */
-    function DashboardController($log, dashboardService) {
+    function DashboardController($log, dashboardService, $translate) {
         // jshint validthis: true
         const vm = this;
 
@@ -25,6 +25,7 @@
         vm.nbLine = changeNbLine;
         vm.sortBy = sortBy;
         vm.searchBy = searchBy;
+        vm.changeLanguage = changeLanguage;
 
         list();
         count();
@@ -86,6 +87,10 @@
             vm.search = search;
             listByPage();
             countAll(search);
+        }
+
+        function changeLanguage(langKey) {
+            $translate.use(langKey);
         }
     }
 })();

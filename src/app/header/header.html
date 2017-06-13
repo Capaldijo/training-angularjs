@@ -3,9 +3,9 @@
         <a class="navbar-brand" href="/"> Application - Computer Database </a>
 
         <div class="pull-left col-xs-5">
-            <a class="flag-icon flag-icon-fr" href="?lang=fr"></a>
-            <a class="flag-icon flag-icon-gb" href="?lang=en"></a>
-            <a class="flag-icon flag-icon-it" href="?lang=it"></a>
+            <a class="flag-icon flag-icon-fr" ng-click="$ctrl.changeLanguage({lang: 'fr'})"></a>
+            <a class="flag-icon flag-icon-gb" ng-click="$ctrl.changeLanguage({lang: 'en'})"></a>
+            <a class="flag-icon flag-icon-it" ng-click="$ctrl.changeLanguage({lang: 'it'})"></a>
         </div>
     </div>
 </header>

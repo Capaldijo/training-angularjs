@@ -3,6 +3,9 @@
 
     angular.module('app.header')
         .component('cdbheader', {
-            templateUrl: 'src/app/header/header.html',
+            bindings: {
+                changeLanguage: '&'
+            },
+            templateUrl: 'src/app/header/header.html'
         });
 })();
